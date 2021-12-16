@@ -9,18 +9,15 @@
 <div class="card text-white bg-secondary mb-3" style="max-width: 30%; background-color: #efefef!important;">
   <div class="card-header" style="background: #4aa7a9; margin-bottom:10px">Header</div>
   <div class="card-body" style="background: #ebffff; color: black">
-    <h5 class="card-title">Secondary card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <p class="card-text">Triggered by: Konark Debbarma</p>
   </div>
 </div>
 
 <div class="card text-white bg-secondary mb-3" style="max-width: 30%; background-color: #efefef!important">
   <div class="card-header" style="background: #4aa7a9; margin-bottom:10px">Header</div>
   <div class="card-body" style="background: #ebffff; color: black">
-    <h5 class="card-title">Secondary card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <p class="card-text">Triggered by: Konark Debbarma</p>
   </div>
-  
 </div>
 </div>
 
@@ -28,10 +25,17 @@
 if(typeof(EventSource) !== "undefined") {
   var source = new EventSource("https://kd-playground-functionapp.azurewebsites.net/api/RunSimulation?code=FwJswALzr5U1mzBSJ/cUUgK2yvTjD5iZCutqplSUcWYphuaTvFTUkw==" + "&simId=konark");
   source.onmessage = function(event) {
-    document.getElementById("result").innerHTML += event.data + "<br>";
+  
+  var fields = input.split(',');
+
+  var type = fields[0];
+  var identifier = fields[1];
+  var value = fields[2];
+  
+    console.log(fields)
   };
 } else {
-  document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
+  console.log("Sorry, your browser does not support server-sent events...");
 }
 </script>
 
