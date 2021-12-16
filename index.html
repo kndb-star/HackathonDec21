@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div>
+<div class="card text-white bg-secondary mb-3" style="max-width: 30%; background-color: #efefef!important;">
+  <div class="card-header" style="background: #4aa7a9; margin-bottom:10px">Header</div>
+  <div class="card-body" style="background: #ebffff; color: black">
+    <h5 class="card-title">Secondary card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+
+<div class="card text-white bg-secondary mb-3" style="max-width: 30%; background-color: #efefef!important">
+  <div class="card-header" style="background: #4aa7a9; margin-bottom:10px">Header</div>
+  <div class="card-body" style="background: #ebffff; color: black">
+    <h5 class="card-title">Secondary card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+  
+</div>
+</div>
+
+<script>
+if(typeof(EventSource) !== "undefined") {
+  var source = new EventSource("https://kd-playground-functionapp.azurewebsites.net/api/RunSimulation?code=FwJswALzr5U1mzBSJ/cUUgK2yvTjD5iZCutqplSUcWYphuaTvFTUkw==" + "&simId=konark");
+  source.onmessage = function(event) {
+    document.getElementById("result").innerHTML += event.data + "<br>";
+  };
+} else {
+  document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
+}
+</script>
+
+</body>
+</html>
