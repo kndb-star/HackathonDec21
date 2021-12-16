@@ -21,14 +21,14 @@ function addSimulation() {
 
 	var simList = document.getElementById("simulationList");
 
-	var cardHtml = '<div class="card text-white bg-secondary mb-3" style="max-width: 30%; background-color: #efefef!important;"><div class="card-header" style="background: #4aa7a9; margin-bottom:10px">Simulation </div><div class="card-body" style="background: #ebffff; color: black"><p class="card-text">Triggered by: Konark Debbarma</p><p class="card-text">Configuration: 8 Core-16 GB</p><p class="card-text">Engine: 8.3 R04 RC1</p><p class="card-text">Solver: CPLEX</p><p class="card-text">Status: <span id="' + randomId + '">--</span> </p></div></div>';
+	var cardHtml = '<div class="card text-white bg-secondary mb-3" style="max-width: 30%; background-color: #efefef!important;"><div class="card-header" style="background: #4aa7a9; margin-bottom:10px">Simulation id -> ' + randomId + '</div><div class="card-body" style="background: #ebffff; color: black"><p class="card-text">Triggered by: Konark Debbarma</p><p class="card-text">Configuration: 8 Core-16 GB</p><p class="card-text">Engine: 8.3 R04 RC1</p><p class="card-text">Solver: CPLEX</p><p class="card-text">Status: <span id="' + randomId + '">--</span> </p></div></div>';
 
 	simList.insertAdjacentHTML("beforeend", cardHtml);
   
 	var oReq = new XMLHttpRequest();
 	oReq.open("POST", 'https://kd-playground-functionapp.azurewebsites.net/api/SubmitASimulation?code=DkKMG6VOJS0rx0ShbJXBBUr/Fd/ackbzFw1i2LzauzenuN4kyzISbw==&simid=' + randomId, true);
 	
-	oReq.onreadystatechange = function() {//Call a function when the state changes.
+	oReq.onreadystatechange = function() {
     if(oReq.status == 204) {
         console.log('Success');
     }}
@@ -51,14 +51,29 @@ if(typeof(EventSource) !== "undefined") {
   var type = fields[0];
   var identifier = fields[1];
   var value = fields[2];
-  console.log(fields);
+	console.log(fields);
+  var element = document.getElementById('something');
+  if (element)
+  {
+  element.class = value;
+  element.textContent=value;
+  }
   
-  document.getElementById(identifier).textContent=value;
   };
 } else {
   console.log("Sorry, your browser does not support server-sent events...");
 }
 </script>
+
+<style>
+.queued {background-color: yellow;}
+.AssignedToPool {background-color: yellow;}
+.AssignedToAgent {background-color: orange;}
+.PreProcessing {background-color: orange;}
+.Running {background-color: orange;}
+.Postprocessing {background-color: orange;}
+.CompletedSuccess {background-color: green;}
+</style>
 
 </body>
 </html>
