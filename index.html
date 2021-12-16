@@ -5,34 +5,55 @@
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<div>
-<div class="card text-white bg-secondary mb-3" style="max-width: 30%; background-color: #efefef!important;">
-  <div class="card-header" style="background: #4aa7a9; margin-bottom:10px">Header</div>
-  <div class="card-body" style="background: #ebffff; color: black">
-    <p class="card-text">Triggered by: Konark Debbarma</p>
-  </div>
-</div>
 
-<div class="card text-white bg-secondary mb-3" style="max-width: 30%; background-color: #efefef!important">
-  <div class="card-header" style="background: #4aa7a9; margin-bottom:10px">Header</div>
-  <div class="card-body" style="background: #ebffff; color: black">
-    <p class="card-text">Triggered by: Konark Debbarma</p>
-  </div>
+<div onclick="addSimulation()">
+   <i class="fa fa-plus" aria-hidden="true"></i>
 </div>
+<div id="simulationList">
 </div>
 
 <script>
-if(typeof(EventSource) !== "undefined") {
-  var source = new EventSource("https://kd-playground-functionapp.azurewebsites.net/api/RunSimulation?code=FwJswALzr5U1mzBSJ/cUUgK2yvTjD5iZCutqplSUcWYphuaTvFTUkw==" + "&simId=konark");
-  source.onmessage = function(event) {
-  
-  var fields = input.split(',');
 
+
+function addSimulation() {
+  
+	var randomId = Math.random().toString(36).substr(2, 5);
+
+	var simList = document.getElementById("simulationList");
+
+	var cardHtml = '<div class="card text-white bg-secondary mb-3" style="max-width: 30%; background-color: #efefef!important;"><div class="card-header" style="background: #4aa7a9; margin-bottom:10px">Simulation </div><div class="card-body" style="background: #ebffff; color: black"><p class="card-text">Triggered by: Konark Debbarma</p><p class="card-text">Configuration: 8 Core-16 GB</p><p class="card-text">Engine: 8.3 R04 RC1</p><p class="card-text">Solver: CPLEX</p><p class="card-text">Status: <span id="' + randomId + '">--</span> </p></div></div>';
+
+	simList.insertAdjacentHTML("beforeend", cardHtml);
+  
+	var oReq = new XMLHttpRequest();
+	oReq.open("POST", 'https://kd-playground-functionapp.azurewebsites.net/api/SubmitASimulation?code=DkKMG6VOJS0rx0ShbJXBBUr/Fd/ackbzFw1i2LzauzenuN4kyzISbw==&simid=' + randomId, true);
+	
+	oReq.onreadystatechange = function() {//Call a function when the state changes.
+    if(oReq.status == 204) {
+        console.log('Success');
+    }
+
+	oReq.send();
+}
+
+function streamLogs() {
+
+ var logSource = new EventSource("https://kd-playground-functionapp.azurewebsites.net/api/StreamLogs?code=MuFPYxFQhc1q7CaxM2X8e8PLoJGoJWpo/8QUWABctC1g7WCObi9cOQ==");
+  
+}
+
+if(typeof(EventSource) !== "undefined") {
+  var simSource = new EventSource("https://kd-playground-functionapp.azurewebsites.net/api/RunSimulation?code=FwJswALzr5U1mzBSJ/cUUgK2yvTjD5iZCutqplSUcWYphuaTvFTUkw==");
+  
+  simSource.onmessage = function(event) 
+  {
+  var fields = event.data.split(',');
   var type = fields[0];
   var identifier = fields[1];
   var value = fields[2];
+  console.log(fields);
   
-    console.log(fields)
+  document.getElementById(identifier).textContent=value;
   };
 } else {
   console.log("Sorry, your browser does not support server-sent events...");
