@@ -3,13 +3,16 @@
 <head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
+<body>  
 
-<div onclick="addSimulation()">
-   <i class="fa fa-plus" aria-hidden="true"></i>
-</div>
-<div id="simulationList">
+
+<i class="fas fa-tasks fa-2x" onclick="addSimulation()"></i>
+<i class="fas fa-file-alt fa-2x" onclick="streamlog()"></i>
+
+
+<div id="cards" class="card-columns">
 </div>
 
 <script>
@@ -19,11 +22,11 @@ function addSimulation() {
   
 	var randomId = Math.random().toString(36).substr(2, 5);
 
-	var simList = document.getElementById("simulationList");
+	var cards = document.getElementById("cards");
 
-	var cardHtml = '<div class="card text-white bg-secondary mb-3" style="max-width: 30%; background-color: #efefef!important;"><div class="card-header" style="background: #4aa7a9; margin-bottom:10px">Simulation id -> ' + randomId + '</div><div class="card-body" style="background: #ebffff; color: black"><p class="card-text">Triggered by: Konark Debbarma</p><p class="card-text">Configuration: 8 Core-16 GB</p><p class="card-text">Engine: 8.3 R04 RC1</p><p class="card-text">Solver: CPLEX</p><p class="card-text">Status: <span id="' + randomId + '">--</span> </p></div></div>';
+	var cardHtml = '<div class="card" style="background-color: #efefef!important; "><div class="card-header" style="background: #4aa7a9; margin-bottom:10px">Simulation id -> ' + randomId + '</div><div class="card-body" style="background: #ebffff; color: black"><p class="card-text">Triggered by: Konark Debbarma</p><p class="card-text">Configuration: 8 Core-16 GB</p><p class="card-text">Engine: 8.3 R04 RC1</p><p class="card-text">Solver: CPLEX</p><p class="card-text">Status: <span id="' + randomId + '">--</span> </p></div></div>';
 
-	simList.insertAdjacentHTML("beforeend", cardHtml);
+	cards.insertAdjacentHTML("beforeend", cardHtml);
   
 	var oReq = new XMLHttpRequest();
 	oReq.open("POST", 'https://kd-playground-functionapp.azurewebsites.net/api/SubmitASimulation?code=DkKMG6VOJS0rx0ShbJXBBUr/Fd/ackbzFw1i2LzauzenuN4kyzISbw==&simid=' + randomId, true);
@@ -36,14 +39,42 @@ function addSimulation() {
 	oReq.send();
 }
 
+function streamlog() {
+  
+	var randomId = Math.random().toString(36).substr(2, 5);
+
+	var cards = document.getElementById("cards");
+
+	var cardHtml = '<div class="card" style="background-color: #343a40!important; "><div class="card-header" style="background: #343a40; color:white">Log</div><div class="card-body" style="background: #343a40; color: yellow"><p id="'+randomId+'"></p></div></div>'
+
+	cards.insertAdjacentHTML("beforeend", cardHtml);
+	
+	 var logSource = new EventSource('https://kd-playground-functionapp.azurewebsites.net/api/StreamLogs?code=MuFPYxFQhc1q7CaxM2X8e8PLoJGoJWpo/8QUWABctC1g7WCObi9cOQ==&simid='+randomId);
+	 
+	  logSource.onmessage = function(event) 
+	  {
+	  var fields = event.data.split(',');
+	  var type = fields[0];
+	  var identifier = fields[1];
+	  var value = fields[2];
+		console.log(fields);
+	  var element = document.getElementById(identifier);
+	  if (element)
+	  {
+	  element.textContent=value;
+	  }};
+ 
+}
+
+
 function streamLogs() {
 
- var logSource = new EventSource("https://kd-playground-functionapp.azurewebsites.net/api/StreamLogs?code=MuFPYxFQhc1q7CaxM2X8e8PLoJGoJWpo/8QUWABctC1g7WCObi9cOQ==");
-  
+ 
 }
 
 if(typeof(EventSource) !== "undefined") {
   var simSource = new EventSource("https://kd-playground-functionapp.azurewebsites.net/api/RunSimulation?code=FwJswALzr5U1mzBSJ/cUUgK2yvTjD5iZCutqplSUcWYphuaTvFTUkw==");
+  
   
   simSource.onmessage = function(event) 
   {
@@ -59,6 +90,8 @@ if(typeof(EventSource) !== "undefined") {
   element.textContent=value;
   }
   
+ 
+  
   };
 } else {
   console.log("Sorry, your browser does not support server-sent events...");
@@ -73,6 +106,8 @@ if(typeof(EventSource) !== "undefined") {
 .Running {background-color: orange;}
 .Postprocessing {background-color: orange;}
 .CompletedSuccess {background-color: green;}
+
+
 </style>
 
 </body>
