@@ -52,7 +52,7 @@ if(typeof(EventSource) !== "undefined") {
   var identifier = fields[1];
   var value = fields[2];
 	console.log(fields);
-  var element = document.getElementById('something');
+  var element = document.getElementById(identifier);
   if (element)
   {
   element.class = value;
