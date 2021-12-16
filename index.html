@@ -45,23 +45,22 @@ function streamlog() {
 
 	var cards = document.getElementById("cards");
 
-	var cardHtml = '<div class="card" style="background-color: #343a40!important; "><div class="card-header" style="background: #343a40; color:white">Log</div><div class="card-body" style="background: #343a40; color: yellow"><p id="'+randomId+'"></p></div></div>'
+	var cardHtml = '<div class="card" style="background-color: #343a40!important; min-width:300px; min-height:300px "><div class="card-header" style="background: #343a40; color:white">Log</div><div class="card-body" style="background: #343a40; color: yellow"><p id="'+randomId+'"></p></div></div>'
 
 	cards.insertAdjacentHTML("beforeend", cardHtml);
 	
-	 var logSource = new EventSource('https://kd-playground-functionapp.azurewebsites.net/api/StreamLogs?code=MuFPYxFQhc1q7CaxM2X8e8PLoJGoJWpo/8QUWABctC1g7WCObi9cOQ==&simid='+randomId);
+	 var logSource = new EventSource('https://kd-playground-functionapp.azurewebsites.net/api/StreamLogs?code=MuFPYxFQhc1q7CaxM2X8e8PLoJGoJWpo/8QUWABctC1g7WCObi9cOQ==');
 	 
 	  logSource.onmessage = function(event) 
 	  {
 	  var fields = event.data.split(',');
 	  var type = fields[0];
-	  var identifier = fields[1];
 	  var value = fields[2];
 		console.log(fields);
-	  var element = document.getElementById(identifier);
+	  var element = document.getElementById(randomId);
 	  if (element)
 	  {
-	  element.textContent=value;
+	    element.textContent +=value;
 	  }};
  
 }
@@ -86,7 +85,7 @@ if(typeof(EventSource) !== "undefined") {
   var element = document.getElementById(identifier);
   if (element)
   {
-  element.class = value;
+  element.className = value;
   element.textContent=value;
   }
   
