@@ -41,55 +41,46 @@ function addSimulation() {
 
 function streamlog() {
   
-	var randomId = Math.random().toString(36).substr(2, 5);
-
 	var cards = document.getElementById("cards");
 
-	var cardHtml = '<div class="card" style="background-color: #343a40!important; min-width:300px; min-height:300px "><div class="card-header" style="background: #343a40; color:white">Log</div><div class="card-body" style="background: #343a40; color: yellow"><p id="'+randomId+'"></p></div></div>'
+	var cardHtml = '<div class="card" style="background-color: #343a40!important; min-width:300px; min-height:300px "><div class="card-header" style="background: #343a40; color:white">Log</div><div class="card-body" style="background: #343a40; color: yellow"><p id="log"></p></div></div>'
 
 	cards.insertAdjacentHTML("beforeend", cardHtml);
 	
-	 var logSource = new EventSource('https://kd-playground-functionapp.azurewebsites.net/api/StreamLogs?code=MuFPYxFQhc1q7CaxM2X8e8PLoJGoJWpo/8QUWABctC1g7WCObi9cOQ==');
-	 
-	  logSource.onmessage = function(event) 
-	  {
-	  var fields = event.data.split(',');
-	  var type = fields[0];
-	  var value = fields[1];
-		console.log(fields);
-	  var element = document.getElementById(randomId);
-	  if (element)
-	  {
-	    element.textContent +=value;
-	  }};
- 
 }
 
-
-function streamLogs() {
-
- 
-}
 
 if(typeof(EventSource) !== "undefined") {
-  var simSource = new EventSource("https://kd-playground-functionapp.azurewebsites.net/api/RunSimulation?code=FwJswALzr5U1mzBSJ/cUUgK2yvTjD5iZCutqplSUcWYphuaTvFTUkw==");
+  <!-- var simSource = new EventSource("https://kd-playground-functionapp.azurewebsites.net/api/RunSimulation?code=FwJswALzr5U1mzBSJ/cUUgK2yvTjD5iZCutqplSUcWYphuaTvFTUkw=="); -->
   
   
-  simSource.onmessage = function(event) 
-  {
-  var fields = event.data.split(',');
-  var type = fields[0];
-  var identifier = fields[1];
-  var value = fields[2];
-	console.log(fields);
-  var element = document.getElementById(identifier);
-  if (element)
-  {
-  element.className = value;
-  element.textContent=value;
-  }
+  <!-- simSource.onmessage = function(event)  -->
+  <!-- { -->
+  <!-- var fields = event.data.split(','); -->
+  <!-- var type = fields[0]; -->
+  <!-- var identifier = fields[1]; -->
+  <!-- var value = fields[2]; -->
+	<!-- console.log(fields); -->
+  <!-- var element = document.getElementById(identifier); -->
+  <!-- if (element) -->
+  <!-- { -->
+  <!-- element.className = value; -->
+  <!-- element.textContent=value; -->
+  <!-- } -->
   
- 
+ 	 var logSource = new EventSource('https://kd-playground-functionapp.azurewebsites.net/api/StreamLogs?code=MuFPYxFQhc1q7CaxM2X8e8PLoJGoJWpo/8QUWABctC1g7WCObi9cOQ==');
+	 
+	  logSource.onmessage = function(event123) 
+	  {
+	  var fields123 = event123.data.split(',');
+	  var type123 = fields123[0];
+	  var value123 = fields123[1];
+		console.log(type123);
+	  var element = document.getElementById(log);
+	  if (element)
+	  {
+	    element.textContent += value123;
+	  }};
   
   };
 } else {
